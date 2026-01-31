@@ -1,0 +1,24 @@
+---
+title: "Contract Lifecycle"
+author: "Pivot Point Consulting"
+created: "2026-01-30"
+updated: "2026-01-30"
+status: "draft"
+category: "legal"
+tags: []
+reviewers: ["@derailed3"]
+next-review: "2026-07-30"
+version: "1.0"
+effective-date: "2026-01-30"
+superseded-date: ""
+supersedes: ""
+template-version: "1.0"
+---
+
+# Contract Lifecycle
+
+Contract tracking, renewal dates, and amendment logs, organized by year. This directory manages the full lifecycle of contracts from execution through renewal or termination. Tracking documents ensure timely renewals and maintain a complete audit trail of amendments.
+
+## Contents
+
+No documents yet.

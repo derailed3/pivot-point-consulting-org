@@ -1,0 +1,24 @@
+---
+title: "Budgets"
+author: "Pivot Point Consulting"
+created: "2026-01-30"
+updated: "2026-01-30"
+status: "draft"
+category: "financial"
+tags: []
+reviewers: ["@derailed3"]
+next-review: "2026-07-30"
+version: "1.0"
+effective-date: "2026-01-30"
+superseded-date: ""
+supersedes: ""
+template-version: "1.0"
+---
+
+# Budgets
+
+Engagement budget templates and tracking, organized by year. This directory contains budget planning tools and actuals tracking for client engagements. Regular budget monitoring ensures engagements remain financially healthy and variances are identified early.
+
+## Contents
+
+No documents yet.

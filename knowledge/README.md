@@ -1,0 +1,24 @@
+---
+title: "Knowledge"
+author: "Pivot Point Consulting"
+created: "2026-01-30"
+updated: "2026-01-30"
+status: "draft"
+category: "knowledge"
+tags: []
+reviewers: ["@derailed3"]
+next-review: "2026-07-30"
+version: "1.0"
+effective-date: "2026-01-30"
+superseded-date: ""
+supersedes: ""
+template-version: "1.0"
+---
+
+# Knowledge
+
+Knowledge management and institutional knowledge wiki. This directory serves as the central repository for organizational knowledge including FAQs, articles, decision records, and productivity tips. Content here captures collective expertise and prevents knowledge loss from team turnover.
+
+## Contents
+
+No documents yet.

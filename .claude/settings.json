@@ -362,5 +362,31 @@
       "WebFetch(domain:ietf.org)",
       "WebFetch(domain:rfc-editor.org)"
     ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/validate-frontmatter.sh"
+          },
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/check-phi-pii.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash(rm*)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/protect-retention.sh"
+          }
+        ]
+      }
+    ]
   }
 }

@@ -1,0 +1,42 @@
+name: Improvement Suggestion
+description: Suggest an improvement to the knowledge base
+title: "[Improvement]: "
+labels: ["improvement"]
+body:
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Templates
+        - Skills/Automation
+        - Workflows/Processes
+        - Documentation Structure
+        - Brand/Marketing
+        - Quality/BTV
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Suggestion
+      description: Describe your improvement idea
+    validations:
+      required: true
+
+  - type: textarea
+    id: benefit
+    attributes:
+      label: Expected Benefit
+      description: How would this improvement help the team?
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options:
+        - Low (nice to have)
+        - Medium (would improve workflow)
+        - High (blocking or significantly impacting work)

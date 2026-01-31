@@ -1,0 +1,50 @@
+name: Document Request
+description: Request a new document or content piece
+title: "[Doc Request]: "
+labels: ["document-request"]
+body:
+  - type: dropdown
+    id: type
+    attributes:
+      label: Document Type
+      options:
+        - Policy
+        - How-to Guide
+        - Workflow
+        - Proposal
+        - SOW
+        - Case Study
+        - Blog Post
+        - Training Material
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What document do you need and why?
+      placeholder: Describe the document you need...
+    validations:
+      required: true
+
+  - type: input
+    id: target-directory
+    attributes:
+      label: Target Directory
+      description: Where should this document live?
+      placeholder: e.g., policies/hr/ or marketing/content/blog-posts/2026/
+
+  - type: input
+    id: deadline
+    attributes:
+      label: Needed By
+      description: When do you need this document?
+      placeholder: YYYY-MM-DD
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional Context
+      description: Any additional context, references, or requirements

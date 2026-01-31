@@ -1,0 +1,52 @@
+name: Security Scan
+
+on:
+  pull_request:
+
+jobs:
+  secrets:
+    name: Secret Detection
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  phi-pii:
+    name: PHI/PII Detection
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Scan for PHI/PII Patterns
+        run: |
+          echo "Scanning for potential PHI/PII patterns..."
+          errors=0
+
+          # SSN pattern (XXX-XX-XXXX)
+          if grep -rn '[0-9]\{3\}-[0-9]\{2\}-[0-9]\{4\}' --include="*.md" . 2>/dev/null | grep -v "YYYY-MM-DD" | grep -v "next-review" | grep -v "created:" | grep -v "updated:" | grep -v "effective-date" | grep -v "superseded-date" | grep -v "retention-until"; then
+            echo "ERROR: Potential SSN pattern detected"
+            errors=$((errors + 1))
+          fi
+
+          # MRN pattern (common formats)
+          if grep -rn 'MRN[: ]*[0-9]\{6,\}' --include="*.md" . 2>/dev/null; then
+            echo "ERROR: Potential MRN pattern detected"
+            errors=$((errors + 1))
+          fi
+
+          # Email addresses (real ones, not placeholders)
+          if grep -rn '[a-zA-Z0-9._%+-]\+@[a-zA-Z0-9.-]\+\.[a-zA-Z]\{2,\}' --include="*.md" . 2>/dev/null | grep -v "PLACEHOLDER" | grep -v "example.com" | grep -v "noreply" | grep -v "@derailed3" | grep -v "user@"; then
+            echo "WARNING: Potential real email addresses detected (review manually)"
+          fi
+
+          if [ $errors -gt 0 ]; then
+            echo "Found $errors potential PHI/PII patterns. Review and remove before merging."
+            exit 1
+          fi
+          echo "PHI/PII scan passed"

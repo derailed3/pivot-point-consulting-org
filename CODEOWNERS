@@ -1,0 +1,38 @@
+# CODEOWNERS -- Pivot Point Consulting Knowledge Base
+# Default: catches anything not matched below
+* @derailed3
+
+# Cross-functional department owners
+# Update GitHub handles as team members are onboarded
+# Multiple owners per path allowed for cross-functional review
+
+/policies/hr/                  @derailed3
+/policies/security/            @derailed3
+/policies/compliance/          @derailed3
+/policies/data-governance/     @derailed3
+/policies/operations/          @derailed3
+/marketing/                    @derailed3
+/marketing/brand/              @derailed3
+/client-delivery/              @derailed3
+/legal/                        @derailed3
+/business-development/         @derailed3
+/it-infrastructure/            @derailed3
+/knowledge/                    @derailed3
+/culture/                      @derailed3
+/recruiting/                   @derailed3
+/internal-comms/               @derailed3
+/project-management/           @derailed3
+/competitive-intelligence/     @derailed3
+/clients/                      @derailed3
+/innovation/                   @derailed3
+/financial/                    @derailed3
+/training/                     @derailed3
+/vendors/                      @derailed3
+/workflows/sales/              @derailed3
+/workflows/project-lifecycle/  @derailed3
+/workflows/onboarding/         @derailed3
+/workflows/quality/            @derailed3
+/workflows/disaster-recovery/  @derailed3
+/docs/                         @derailed3
+/templates/                    @derailed3
+/.claude/                      @derailed3

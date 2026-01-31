@@ -1,0 +1,49 @@
+name: Brand Compliance Check
+
+on:
+  pull_request:
+    paths:
+      - "marketing/**"
+      - "client-delivery/**"
+
+jobs:
+  brand-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check Company Name Consistency
+        run: |
+          echo "Checking for inconsistent company name references..."
+          errors=0
+          # Check for common misspellings or inconsistencies
+          banned_terms=("Pivot Point consulting" "pivot point Consulting" "PivotPoint" "Pivot-Point" "pivot point consulting")
+          for term in "${banned_terms[@]}"; do
+            if grep -rn "$term" --include="*.md" marketing/ client-delivery/ 2>/dev/null; then
+              echo "ERROR: Found inconsistent company name: '$term' (use 'Pivot Point Consulting')"
+              errors=$((errors + 1))
+            fi
+          done
+          if [ $errors -gt 0 ]; then
+            echo "Found $errors brand consistency issues"
+            exit 1
+          fi
+          echo "Brand consistency check passed"
+
+      - name: Check Banned Terms
+        run: |
+          echo "Checking for banned terms..."
+          # Add banned terms as needed
+          banned=("TBD" "TODO" "FIXME" "HACK" "XXX")
+          errors=0
+          for term in "${banned[@]}"; do
+            if grep -rn "$term" --include="*.md" marketing/ client-delivery/ 2>/dev/null; then
+              echo "WARNING: Found '$term' in client-facing content"
+              errors=$((errors + 1))
+            fi
+          done
+          if [ $errors -gt 0 ]; then
+            echo "Found $errors banned terms in client-facing content"
+            exit 1
+          fi
+          echo "No banned terms found"

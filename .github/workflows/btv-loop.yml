@@ -1,0 +1,109 @@
+name: BTV Loop
+
+on:
+  pull_request:
+    paths: ["**.md"]
+
+jobs:
+  build:
+    name: BUILD
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install MkDocs
+        run: pip install -r requirements.txt
+
+      - name: Build Documentation
+        run: mkdocs build --strict
+
+      - name: Check Links
+        uses: lycheeverse/lychee-action@v1
+        with:
+          args: --verbose --no-progress "**/*.md"
+          fail: true
+
+  test:
+    name: TEST
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Spell Check
+        uses: streetsidesoftware/cspell-action@v6
+        with:
+          config: ".cspell.json"
+          files: "**/*.md"
+
+      - name: Validate Frontmatter
+        run: |
+          errors=0
+          while IFS= read -r file; do
+            if [[ "$file" == *"_archive"* ]] || [[ "$file" == *"node_modules"* ]]; then
+              continue
+            fi
+            first_line=$(head -n 1 "$file")
+            if [ "$first_line" != "---" ]; then
+              echo "ERROR: Missing frontmatter: $file"
+              errors=$((errors + 1))
+            fi
+          done < <(find . -name "*.md" -not -path "./.git/*" -not -path "./node_modules/*" -not -path "./site/*")
+          if [ $errors -gt 0 ]; then
+            exit 1
+          fi
+
+      - name: Validate HIPAA Retention Fields
+        run: |
+          echo "Checking retention-until fields on compliance documents..."
+          errors=0
+          for dir in policies/compliance policies/security policies/data-governance; do
+            if [ -d "$dir" ]; then
+              while IFS= read -r file; do
+                if [[ "$file" == *"README.md" ]]; then continue; fi
+                if ! grep -q "retention-until:" "$file" 2>/dev/null; then
+                  echo "ERROR: Missing retention-until field: $file"
+                  errors=$((errors + 1))
+                fi
+              done < <(find "$dir" -name "*.md" -not -name "README.md")
+            fi
+          done
+          if [ $errors -gt 0 ]; then
+            echo "Found $errors compliance files missing retention-until field"
+            exit 1
+          fi
+          echo "Retention field check passed"
+
+  validate:
+    name: VALIDATE
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Markdown Lint
+        uses: DavidAnson/markdownlint-cli2-action@v16
+        with:
+          globs: "**/*.md"
+          config: ".markdownlint.json"
+
+      - name: Check Document Structure
+        run: |
+          echo "Validating document structure..."
+          # Check that changed files have required status field
+          errors=0
+          while IFS= read -r file; do
+            if [[ "$file" == *"README.md" ]] || [[ "$file" == *"_archive"* ]]; then continue; fi
+            if ! grep -q "status:" "$file" 2>/dev/null; then
+              echo "ERROR: Missing status field: $file"
+              errors=$((errors + 1))
+            fi
+          done < <(find . -name "*.md" -not -path "./.git/*" -not -path "./node_modules/*" -not -path "./site/*" -not -name "README.md")
+          if [ $errors -gt 0 ]; then
+            exit 1
+          fi
+          echo "Structure validation passed"

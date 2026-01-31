@@ -1,0 +1,45 @@
+name: Policy Update
+description: Request an update to an existing policy
+title: "[Policy Update]: "
+labels: ["policy", "compliance"]
+body:
+  - type: input
+    id: policy-path
+    attributes:
+      label: Policy File Path
+      description: Path to the policy that needs updating
+      placeholder: e.g., policies/compliance/hipaa/privacy-rule.md
+    validations:
+      required: true
+
+  - type: dropdown
+    id: change-type
+    attributes:
+      label: Type of Change
+      options:
+        - Minor (editorial, formatting)
+        - Major (substantive content change)
+        - Regulatory (driven by regulatory change)
+        - Scheduled Review (annual review cycle)
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What needs to change?
+      description: Describe the specific changes needed
+    validations:
+      required: true
+
+  - type: textarea
+    id: justification
+    attributes:
+      label: Justification
+      description: Why is this change needed? Reference any regulatory changes or incidents.
+
+  - type: input
+    id: effective-date
+    attributes:
+      label: Desired Effective Date
+      placeholder: YYYY-MM-DD
